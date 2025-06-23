@@ -4,314 +4,263 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel de Administração de Usuários</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #121212;
             color: #fff;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
         }
 
-        .admin-container {
-            background: #ffffff0d;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,.1);
-            border-radius: .75rem;
-            padding: 1.5rem;
-            transition: all .3s ease;
-            width: 90%;
-            max-width: 1200px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        .sidebar {
+            background-color: #212529;
+            height: 100vh;
+            position: fixed;
+            width: 250px;
+            padding-top: 20px;
         }
 
-        h1 {
-            text-align: center;
-            color: #8b5cf6;
-            margin-bottom: 1.5rem;
+        .sidebar a {
+            padding: 10px 20px;
+            color: #fff;
+            display: block;
+            text-decoration: none;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 1rem;
+        .sidebar a:hover {
+            background-color: #343a40;
         }
 
-        th, td {
-            padding: 0.75rem;
-            text-align: left;
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: #343a40;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Estilos para a tabela */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .table {
+            color: #fff;
+        }
+
+        .table th,
+        .table td {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Estilos para o modal */
+        .modal-content {
+            background-color: #343a40;
+            color: #fff;
+        }
+
+        .modal-header {
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        th {
-            background-color: #374151;
-            color: #cbd5e0;
+        .modal-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        input[type="text"],
-        input[type="email"],
-        input[type="number"] {
-            background: transparent;
-            border: 1px solid rgba(255,255,255,.1);
-            border-radius: .5rem;
-            color: white;
-            padding: 0.5rem;
-            width: 100%;
-            box-sizing: border-box;
-            transition: border-color 0.3s ease;
+        .btn-primary {
+            background-color: #8b5cf6;
+            border-color: #8b5cf6;
         }
 
-        input[type="text"]:focus,
-        input[type="email"]:focus,
-        input[type="number"]:focus {
-            border-color: #06b6d4;
-            outline: none;
-        }
-
-        .add-credit {
-            cursor: pointer;
-            color: #06b6d4;
-            font-weight: bold;
-            margin-left: 0.5rem;
-            transition: color 0.3s ease;
-        }
-
-        .add-credit:hover {
-            color: #3b82f6;
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: center;
-            margin-top: 1rem;
-        }
-
-        .pagination a {
-            color: #fff;
-            padding: 0.5rem 0.75rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: .5rem;
-            margin: 0 0.25rem;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .pagination a:hover,
-        .pagination a.active {
-            background-color: #3b82f6;
-            border-color: #3b82f6;
-        }
-
-        /* Estilos para o modal de adicionar créditos */
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-        }
-
-        .modal-content {
-            position: relative;
-            background-color: #fefefe;
-            margin: 15% auto; /* 15% from the top and centered */
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%; /* Could be more or less, depending on screen size */
-            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-            animation-name: animatetop;
-            animation-duration: 0.4s
-        }
-
-        /* Add Animation */
-        @-webkit-keyframes animatetop {
-            from {top:-300px; opacity:0}
-            to {top:15%; opacity:1}
-        }
-
-        @keyframes animatetop {
-            from {top:-300px; opacity:0}
-            to {top:15%; opacity:1}
-        }
-
-        /* The Close Button */
-        .close {
-            color: #aaaaaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: #000;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        /* Style the credit input inside the modal */
-        #creditAmount {
-            width: 100%;
-            padding: 12px 20px;
-            margin: 8px 0;
-            display: inline-block;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        .save-credit-button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 14px 20px;
-            margin: 8px 0;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        .save-credit-button:hover {
-            background-color: #45a049;
+        .btn-primary:hover {
+            background-color: #7c3aed;
+            border-color: #7c3aed;
         }
     </style>
 </head>
 <body>
 
-<div class="admin-container">
-    <h1>Painel de Administração de Usuários</h1>
-    <table>
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>Email</th>
-            <th>Senha</th>
-            <th>Limite</th>
-            <th>Gastos</th>
-            <th>Perm</th>
-            <th>Alias</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>1</td>
-            <td><input type="text" value="Usuário 1" data-field="nome" data-id="1"></td>
-            <td><input type="email" value="usuario1@email.com" data-field="email" data-id="1"></td>
-            <td>******</td>
-            <td><input type="number" value="100" data-field="limite" data-id="1"> <span class="add-credit" data-id="1">+</span></td>
-            <td>50</td>
-            <td>Ativo</td>
-            <td>Alias1</td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td><input type="text" value="Usuário 2" data-field="nome" data-id="2"></td>
-            <td><input type="email" value="usuario2@email.com" data-field="email" data-id="2"></td>
-            <td>******</td>
-            <td><input type="number" value="200" data-field="limite" data-id="2"> <span class="add-credit" data-id="2">+</span></td>
-            <td>75</td>
-            <td>Inativo</td>
-            <td>Alias2</td>
-        </tr>
-        <!-- Mais linhas de usuários aqui -->
-        </tbody>
-    </table>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav class="col-md-3 col-lg-2 d-md-block sidebar">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">
+                                <i class="fas fa-home"></i>
+                                Dashboard <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="fas fa-users"></i>
+                                Usuários
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="fas fa-cog"></i>
+                                Configurações
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
 
-     <!-- Modal para adicionar créditos -->
-     <div id="addCreditModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Adicionar Créditos</h2>
-            <label for="creditAmount">Valor:</label>
-            <input type="number" id="creditAmount" name="creditAmount">
-            <button class="save-credit-button">Salvar Créditos</button>
+            <!-- Conteúdo -->
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 content">
+                <div class="header">
+                    <h1>Painel de Administração de Usuários</h1>
+                </div>
+
+                <!-- Tabela de Usuários -->
+                <div class="table-responsive">
+                    <table class="table table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Limite</th>
+                                <th>Gastos</th>
+                                <th>Perm</th>
+                                <th>Alias</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Usuário 1</td>
+                                <td>usuario1@email.com</td>
+                                <td>100</td>
+                                <td>50</td>
+                                <td>Ativo</td>
+                                <td>Alias1</td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editModal" data-id="1" data-nome="Usuário 1" data-email="usuario1@email.com" data-limite="100">
+                                        <i class="fas fa-edit"></i> Editar
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Usuário 2</td>
+                                <td>usuario2@email.com</td>
+                                <td>200</td>
+                                <td>75</td>
+                                <td>Inativo</td>
+                                <td>Alias2</td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editModal" data-id="2" data-nome="Usuário 2" data-email="usuario2@email.com" data-limite="200">
+                                        <i class="fas fa-edit"></i> Editar
+                                    </button>
+                                </td>
+                            </tr>
+                            <!-- Mais linhas de usuários aqui -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Modal de Edição -->
+                <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editModalLabel">Editar Usuário</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="editForm">
+                                    <input type="hidden" id="editId" name="id">
+                                    <div class="form-group">
+                                        <label for="editNome">Nome</label>
+                                        <input type="text" class="form-control" id="editNome" name="nome">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editEmail">Email</label>
+                                        <input type="email" class="form-control" id="editEmail" name="email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editLimite">Limite</label>
+                                        <input type="number" class="form-control" id="editLimite" name="limite">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-primary" id="saveChanges">Salvar Alterações</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Modal para adicionar créditos -->
+                 <div id="addCreditModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h2>Adicionar Créditos</h2>
+                        <label for="creditAmount">Valor:</label>
+                        <input type="number" id="creditAmount" name="creditAmount">
+                        <button class="save-credit-button">Salvar Créditos</button>
+                    </div>
+                </div>
+            </main>
         </div>
     </div>
 
-    <div class="pagination">
-        <a href="#" class="active">1</a>
-        <a href="#">2</a>
-        <a href="#">3</a>
-        <a href="#">Próxima</a>
-    </div>
-</div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $('#editModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var id = button.data('id');
+            var nome = button.data('nome');
+            var email = button.data('email');
+            var limite = button.data('limite');
 
-<script>
-    const inputs = document.querySelectorAll('input[data-field]');
-
-    inputs.forEach(input => {
-        input.addEventListener('blur', function() {
-            const field = this.dataset.field;
-            const id = this.dataset.id;
-            const value = this.value;
-
-            // Simulação de salvamento automático (substitua por sua chamada AJAX)
-            console.log(`Salvando: ID ${id}, Campo ${field}, Valor ${value}`);
-
-            // Aqui você faria a chamada AJAX para o seu backend PHP
-            // Exemplo:
-            /*
-            fetch('/api/salvar_usuario.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    id: id,
-                    field: field,
-                    value: value
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Sucesso:', data);
-                // Feedback visual (ex: um checkmark verde)
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-                // Feedback visual de erro
-            });
-            */
+            var modal = $(this);
+            modal.find('.modal-title').text('Editar Usuário ID: ' + id);
+            modal.find('#editId').val(id);
+            modal.find('#editNome').val(nome);
+            modal.find('#editEmail').val(email);
+            modal.find('#editLimite').val(limite);
         });
-    });
 
-      // Get the modal
-      var modal = document.getElementById("addCreditModal");
+        $('#saveChanges').click(function() {
+            var id = $('#editId').val();
+            var nome = $('#editNome').val();
+            var email = $('#editEmail').val();
+            var limite = $('#editLimite').val();
 
-    // Get the button that opens the modal
-    var addCreditButtons = document.querySelectorAll(".add-credit");
-
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-
-    // When the user clicks the button, open the modal
-    addCreditButtons.forEach(button => {
-        button.onclick = function() {
-            modal.style.display = "block";
-        }
-    });
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-</script>
-
+            // Enviar os dados para o servidor via AJAX
+            $.ajax({
+                url: '/api/salvar_usuario.php', // Substitua pelo seu endpoint PHP
+                type: 'POST',
+                data: {
+                    id: id,
+                    nome: nome,
+                    email: email,
+                    limite: limite
+                },
+                success: function(response) {
+                    console.log('Sucesso:', response);
+                    $('#editModal').modal('hide');
+                    // Atualizar a linha da tabela com os novos dados (opcional)
+                },
+                error: function(error) {
+                    console.error('Erro:', error);
+                    alert('Erro ao salvar as alterações.');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
