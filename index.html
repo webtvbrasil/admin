@@ -8,27 +8,33 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <style>
         body {
-            background-color: #121212;
-            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0a0b1e; /* Tom escuro */
+            color: #e0e0e0; /* Cor de texto mais suave */
         }
 
         .sidebar {
-            background-color: #212529;
+            background-color: #1e293b; /* Tom mais suave para a sidebar */
             height: 100vh;
             position: fixed;
             width: 250px;
             padding-top: 20px;
+            border-radius: 1rem; /* Bordas arredondadas */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Sombra suave */
         }
 
         .sidebar a {
             padding: 10px 20px;
-            color: #fff;
+            color: #cbd5e0; /* Cor mais suave para os links */
             display: block;
             text-decoration: none;
+            transition: background-color 0.3s ease, color 0.3s ease; /* Transição suave */
+            border-radius: 0.75rem; /* Bordas arredondadas */
         }
 
         .sidebar a:hover {
-            background-color: #343a40;
+            background-color: #334155; /* Tom mais escuro no hover */
+            color: #fff; /* Cor do texto no hover */
         }
 
         .content {
@@ -37,9 +43,11 @@
         }
 
         .header {
-            background-color: #343a40;
+            background-color: #1e293b; /* Tom mais suave para o header */
             padding: 10px;
             margin-bottom: 20px;
+            border-radius: 1rem; /* Bordas arredondadas */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Sombra suave */
         }
 
         /* Estilos para a tabela */
@@ -48,18 +56,29 @@
         }
 
         .table {
-            color: #fff;
+            color: #e0e0e0; /* Cor da tabela mais suave */
+            border-radius: 1rem; /* Bordas arredondadas */
+            overflow: hidden; /* Esconde as bordas que ultrapassam o radius */
         }
 
         .table th,
         .table td {
             border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.75rem; /* Aumentar o padding */
+        }
+
+        .table thead th {
+            background-color: #334155; /* Tom mais escuro para o header da tabela */
+            color: #f1f5f9; /* Cor do texto do header da tabela */
+            border-bottom: 2px solid #475569; /* Borda inferior mais forte */
         }
 
         /* Estilos para o modal */
         .modal-content {
-            background-color: #343a40;
-            color: #fff;
+            background-color: #1e293b; /* Tom mais suave para o modal */
+            color: #e0e0e0; /* Cor do texto no modal */
+            border-radius: 1rem; /* Bordas arredondadas */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Sombra suave */
         }
 
         .modal-header {
@@ -73,11 +92,29 @@
         .btn-primary {
             background-color: #8b5cf6;
             border-color: #8b5cf6;
+            border-radius: 0.75rem; /* Bordas arredondadas para o botão */
+            transition: background-color 0.3s ease, border-color 0.3s ease; /* Transição suave */
         }
 
         .btn-primary:hover {
             background-color: #7c3aed;
             border-color: #7c3aed;
+        }
+
+        /* Estilos para os inputs */
+        .form-control {
+            background-color: #334155; /* Tom mais escuro para os inputs */
+            border: 1px solid #475569; /* Borda mais suave */
+            color: #f1f5f9; /* Cor do texto nos inputs */
+            border-radius: 0.75rem; /* Bordas arredondadas */
+            transition: border-color 0.3s ease; /* Transição suave */
+        }
+
+        .form-control:focus {
+            border-color: #8b5cf6; /* Cor da borda ao focar */
+            box-shadow: none; /* Remove a sombra padrão ao focar */
+            outline: none; /* Remove o outline padrão ao focar */
+            background-color: #475569; /* Tom mais escuro ao focar */
         }
     </style>
 </head>
@@ -198,17 +235,6 @@
                                 <button type="button" class="btn btn-primary" id="saveChanges">Salvar Alterações</button>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                 <!-- Modal para adicionar créditos -->
-                 <div id="addCreditModal" class="modal">
-                    <div class="modal-content">
-                        <span class="close">&times;</span>
-                        <h2>Adicionar Créditos</h2>
-                        <label for="creditAmount">Valor:</label>
-                        <input type="number" id="creditAmount" name="creditAmount">
-                        <button class="save-credit-button">Salvar Créditos</button>
                     </div>
                 </div>
             </main>
